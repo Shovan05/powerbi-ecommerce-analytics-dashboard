@@ -1,5 +1,10 @@
--- Base Measures --
+# DAX Measures
 
+This document contains the DAX measures used to calculate KPIs and business metrics for the Power BI dashboard.
+
+---
+
+# 💰 Base Measures
 Revenue := SUM ( 'public bi_fact_sales'[price] )
 
 Freight := SUM ( 'public bi_fact_sales'[freight_value] )
@@ -28,7 +33,9 @@ On-time % :=
 DIVIDE ( [Delivered Orders] - [Late Orders], [Delivered Orders] )
 
 
--- Time Measures --
+<br>
+
+# 📈 Time Measures 
 
 Revenue YTD := TOTALYTD ( [Revenue], DimDate[Date] )
 
@@ -43,9 +50,9 @@ CALCULATE(
     DATESINPERIOD ( DimDate[Date], MAX ( DimDate[Date] ), -30, DAY )
 )
 
+<br>
 
-
--- Review Sentiment Measures --
+# 😊 Review Sentiment Measures 
 
 Positive Reviews % :=
 DIVIDE(
@@ -59,9 +66,9 @@ DIVIDE(
     CALCULATE( COUNTROWS('public bi_fact_sales'), NOT ISBLANK('public bi_fact_sales'[review_score]) )
 )
 
+<br>
 
-
--- Payments Measures--
+# 💳 Payments Measures
 
 Payment Value := SUM ( 'public bi_fact_sales'[payment_value] )
 
@@ -70,11 +77,11 @@ Avg Installments := AVERAGE ( 'public bi_fact_sales'[payment_installments] )
 
 
 
+<br>
 
 
 
-
--- Page 5 -- Dilevery & Logistics -- 
+# 🚚 Dilevery & Logistics 
 
 Avg Delivery Days :=
 AVERAGE ( 'public bi_fact_sales'[delivery_days] )
@@ -82,9 +89,9 @@ AVERAGE ( 'public bi_fact_sales'[delivery_days] )
 
 Late % := DIVIDE( [Late Orders], [Delivered Orders] )
 
+<br>
 
-
--- Page 6 -- Reviews
+# ⭐  Reviews
 
 Review Bucket :=
 SWITCH(
@@ -95,19 +102,28 @@ SWITCH(
     "Negative (1-2)"
 )
 
+<br>
 
--- Page 8 -- Seller 
+# 🏪 Seller 
 
 Sellers := DISTINCTCOUNT ( 'public bi_fact_sales'[seller_id] )
 
 Revenue per Seller := DIVIDE ( [Revenue], [Sellers] )
 
+<br>
 
--- Page 9 -- Drillthrough
+# 🔍 Drillthrough
 
 Drill Title = 
 "Drillthrough: " &
 COALESCE( SELECTEDVALUE('public bi_fact_sales'[category]), "All" )
 
+<br>
+
+# 📌 Notes
+
+- All measures were created using **DAX** in **Power BI**.
+- These measures power the KPIs, charts, cards, and drillthrough pages across the dashboard.
+- Additional measures may be added as the project evolves.
 
 
